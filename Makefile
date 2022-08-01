@@ -26,9 +26,13 @@ _IWHITE=$'\033[47m
 
 DONE	=  	@echo "$(_BOLD)$(_GREEN)Compilation done !!! 👌$(_END)"
 
-NAME	=	fdf
+NAME_CLIENT	=	client
 
-CFILES	=	./srcs/main.c\
+NAME_SERVER =	server
+
+CFILES_CLIENT	=	./srcs_server/main.c\
+
+CFILES_SERVER =	./srcs_client/main.c\
 
 OBJECTS = 	$(CFILES:.c=.o)
 
