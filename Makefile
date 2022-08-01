@@ -24,44 +24,54 @@ _IPURPLE=$'\033[45m
 _ICYAN=$'\033[46m
 _IWHITE=$'\033[47m
 
-DONE	=  	@echo "$(_BOLD)$(_GREEN)Compilation done !!! 👌$(_END)"
+DONE			=  	@echo "$(_BOLD)$(_GREEN)Compilation of client and server done !!! 👌$(_END)"
 
-NAME_CLIENT	=	client
+NAME_CLIENT		=	client
 
-NAME_SERVER =	server
+NAME_SERVER		=	server
+
+OBJS_PATH		=	./objs/
 
 CFILES_CLIENT	=	./srcs_server/main.c\
 
-CFILES_SERVER =	./srcs_client/main.c\
+CFILES_SERVER	=	./srcs_client/main.c\
 
-OBJECTS = 	$(CFILES:.c=.o)
+OBJECTS_CLIENT	= 	$(CFILES_CLIENT:.c=.o)
 
-LIB_PATH = 	libft/
+OBJECTS_SERVER	= 	$(CFILES_SERVER:.c=.o)
 
-CC = 		cc
+LIB_PATH 		= 	./libft/
 
-CFLAGS =	-Wall -Wextra -Werror -g
+CC				=	cc
 
-all: subsystem $(NAME) # Make all
+CFLAGS			=	-Wall -Wextra -Werror -g
+
+all: subsystem $(NAME_CLIENT) $(NAME_SERVER) # Make all
+	$(DONE)
 
 subsystem: # Make the libft first then the minilibx
 	@echo "$(_BOLD)$(_IYELLOW)$(_PURPLE)Verifying libft status...$(_END)"
 	make -C $(LIB_PATH) all
 	@echo "$(_BOLD)$(_PURPLE)libft archive generated, nothing else to be done here$(_END)"
 
-$(NAME): $(OBJECTS)
-	@echo "$(_BOLD)$(_BLUE)fdf: all object files generated$(_END)"
-	$(CC) $(CFLAGS) $(OBJECTS) $(LIB_PATH)libft.a -o $(NAME)
-	$(DONE)
+$(NAME_CLIENT): $(OBJECTS_CLIENT)
+	@echo "$(_BOLD)$(_BLUE)client: all object files generated$(_END)"
+	$(CC) $(CFLAGS) $(OBJECTS_CLIENT) $(LIB_PATH)libft.a -o $(NAME_CLIENT)
+
+$(NAME_SERVER): $(OBJECTS_SERVER)
+	@echo "$(_BOLD)$(_BLUE)server: all object files generated$(_END)"
+	$(CC) $(CFLAGS) $(OBJECTS_SERVER) $(LIB_PATH)libft.a -o $(NAME_SERVER)
 
 clean: # Clean generated object files
 	make -C $(LIB_PATH) clean
-	rm -f $(OBJECTS)
+	rm -f $(OBJECTS_CLIENT)
+	rm -f $(OBJECTS_SERVER)
 	@echo "$(_BOLD)$(_YELLOW)All object files removed$(_END)"
 
 fclean: clean # Clean generated object files and and targets
 	make -C $(LIB_PATH) fclean
-	rm -f $(NAME)
+	rm -f $(NAME_CLIENT)
+	rm -f $(NAME_SERVER)
 	@echo "$(_BOLD)$(_YELLOW)All generated files removed$(_END)"
 
 re: fclean all
@@ -72,4 +82,4 @@ call: all clean # Clean generated object files then clean libft target and objec
 
 .PHONY	: all clean fclean re call
 
-.SILENT :
+#.SILENT :
