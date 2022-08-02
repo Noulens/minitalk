@@ -6,7 +6,7 @@
 /*   By: tnoulens <tnoulens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 15:26:05 by tnoulens          #+#    #+#             */
-/*   Updated: 2022/08/02 19:00:27 by tnoulens         ###   ########.fr       */
+/*   Updated: 2022/08/02 19:06:25 by tnoulens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,14 @@ int	bit_sender(pid_t the_pid, unsigned char uc)
 	bit_comp = 1 << CHAR_BIT;
 	while (bit_comp)
 	{
-		if(bit_comp & uc)
-			if(kill(the_pid, SIGUSR1) == -1)
-				return(0);
+		if (bit_comp & uc)
+		{
+			if (kill(the_pid, SIGUSR1) == -1)
+				return (0);
+		}
 		else
 			if (kill(the_pid, SIGUSR2) == -1)
-				return(0);
+				return (0);
 		bit_comp >>= 1;
 	}
-}
-
-int	main(int argc, char **argv)
-{
-	;
 }
