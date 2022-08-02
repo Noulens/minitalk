@@ -6,7 +6,7 @@
 /*   By: tnoulens <tnoulens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 13:51:46 by tnoulens          #+#    #+#             */
-/*   Updated: 2022/08/01 16:18:18 by tnoulens         ###   ########.fr       */
+/*   Updated: 2022/08/02 18:08:56 by tnoulens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <stdio.h>
 # include <signal.h>
 # include <sys/types.h>
+# include <limits.h>
 
 /* This is a minimal set of ANSI/VT100 color codes */
 # define END "\033[0m"
