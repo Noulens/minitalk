@@ -6,34 +6,34 @@
 /*   By: tnoulens <tnoulens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 15:26:05 by tnoulens          #+#    #+#             */
-/*   Updated: 2022/08/03 18:45:31 by tnoulens         ###   ########.fr       */
+/*   Updated: 2022/08/03 20:16:31 by tnoulens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minitalk.h"
 
-static int	delivery_confirmation(int num)
+static void	delivery_confirmation(int num)
 {
 	(void)num;
 	write(1, BLUE"\nmessage has been received indeed!\n"END, 13);
 	exit(EXIT_SUCCESS);
 }
 
-static int	bit_sender(pid_t the_pid, unsigned char uc)
+static void	bit_sender(pid_t the_pid, char c)
 {
-	unsigned char	bit_comp;
+	int	bit_comp;
 
-	bit_comp = 1 << CHAR_BIT;
+	bit_comp = 0b10000000;
 	while (bit_comp)
 	{
-		if (bit_comp & uc)
+		if (bit_comp & c)
 		{
 			if (kill(the_pid, SIGUSR1) == -1)
-				return (0);
+				return ;
 		}
 		else
 			if (kill(the_pid, SIGUSR2) == -1)
-				return (0);
+				return ;
 		bit_comp >>= 1;
 	}
 }
@@ -47,11 +47,11 @@ int	main(int argc, char **argv)
 	the_pid = ft_atoi(argv[1]);
 	if (the_pid == 0)
 		return (ft_printf(RED"\ntry server's PID please\n"END), 1);
-	while (argv[2])
+	while (*argv[2])
 	{
-		bit_sender(the_pid, (unsigned char)*argv[2]);
+		bit_sender(the_pid, *argv[2]);
 		++argv[2];
-		usleep(1000);
+		usleep(100);
 	}
 	sleep(5);
 	signal(SIGUSR1, delivery_confirmation);

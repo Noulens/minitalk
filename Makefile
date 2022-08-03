@@ -24,7 +24,9 @@ _IPURPLE=$'\033[45m
 _ICYAN=$'\033[46m
 _IWHITE=$'\033[47m
 
-DONE			=  	@echo "$(_BOLD)$(_GREEN)Compilation of client and server done !!! 👌$(_END)"
+DONE_SERVER			=  	@echo "$(_BOLD)$(_GREEN)Compilation of server done !!! 👌$(_END)"
+
+DONE_CLIENT			=  	@echo "$(_BOLD)$(_GREEN)Compilation of client done !!! 👌$(_END)"
 
 NAME_CLIENT		=	client
 
@@ -32,9 +34,9 @@ NAME_SERVER		=	server
 
 OBJS_PATH		=	./objs/
 
-CFILES_CLIENT	=	./srcs_server/main.c\
+CFILES_CLIENT	=	./srcs_client/main.c\
 
-CFILES_SERVER	=	./srcs_client/main.c\
+CFILES_SERVER	=	./srcs_server/main.c\
 
 OBJECTS_CLIENT	= 	$(CFILES_CLIENT:.c=.o)
 
@@ -46,21 +48,26 @@ CC				=	cc
 
 CFLAGS			=	-Wall -Wextra -Werror -g
 
-all: subsystem $(NAME_CLIENT) $(NAME_SERVER) # Make all
-	$(DONE)
+all: subsystem allserver allclient # Make all
+
+allserver:	$(NAME_SERVER)
+
+allclient:	$(NAME_CLIENT)
 
 subsystem: # Make the libft first then the minilibx
 	@echo "$(_BOLD)$(_IYELLOW)$(_PURPLE)Verifying libft status...$(_END)"
 	make -C $(LIB_PATH) all
 	@echo "$(_BOLD)$(_PURPLE)libft archive generated, nothing else to be done here$(_END)"
 
-$(NAME_CLIENT): $(OBJECTS_CLIENT)
-	@echo "$(_BOLD)$(_BLUE)client: all object files generated$(_END)"
-	$(CC) $(CFLAGS) $(OBJECTS_CLIENT) $(LIB_PATH)libft.a -o $(NAME_CLIENT)
-
 $(NAME_SERVER): $(OBJECTS_SERVER)
 	@echo "$(_BOLD)$(_BLUE)server: all object files generated$(_END)"
 	$(CC) $(CFLAGS) $(OBJECTS_SERVER) $(LIB_PATH)libft.a -o $(NAME_SERVER)
+	$(DONE_SERVER)
+
+$(NAME_CLIENT): $(OBJECTS_CLIENT)
+	@echo "$(_BOLD)$(_BLUE)client: all object files generated$(_END)"
+	$(CC) $(CFLAGS) $(OBJECTS_CLIENT) $(LIB_PATH)libft.a -o $(NAME_CLIENT)
+	$(DONE_CLIENT)
 
 clean: # Clean generated object files
 	make -C $(LIB_PATH) clean
@@ -82,4 +89,4 @@ call: all clean # Clean generated object files then clean libft target and objec
 
 .PHONY	: all clean fclean re call
 
-#.SILENT :
+.SILENT :

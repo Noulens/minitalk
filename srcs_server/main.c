@@ -6,7 +6,7 @@
 /*   By: tnoulens <tnoulens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 14:50:17 by tnoulens          #+#    #+#             */
-/*   Updated: 2022/08/03 19:10:31 by tnoulens         ###   ########.fr       */
+/*   Updated: 2022/08/03 20:15:25 by tnoulens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,49 +23,9 @@ static void	initialize(t_data *g_info)
 	g_info->i = 0;
 }
 
-static void	handler0(int num)
-{
-	(void)num;
-	g_info.index += 1;
-	if (g_info.index == 9)
-	{
-		g_info.buf[g_info.i] = g_info.c;
-		++g_info.i;
-		g_info.index = 0;
-		g_info.c = 0b0;
-		if (g_info.i == BUFF)
-		{
-			g_info.p = ft_append(g_info.p, g_info.buf);
-			g_info.i = 0;
-		}
-	}
-}
-
-static void	handler1(int num)
-{
-	int	bit;
-
-	(void)num;
-	bit = 1 << CHAR_BIT;
-	if (g_info.index == 9)
-	{
-		g_info.buf[g_info.i] = g_info.c;
-		++g_info.i;
-		g_info.index = 0;
-		g_info.c = 0b0;
-		if (g_info.i == BUFF)
-		{
-			g_info.p = ft_append(g_info.p, g_info.buf);
-			g_info.i = 0;
-		}
-		return ;
-	}
-	g_info.c += bit >> g_info.index;
-}
-
 static char	*ft_append(char *old, char *new)
 {
-	int		len;
+	int				len;
 	char	*ptr;
 	char	*ret;
 	char	*oldptr;
@@ -91,20 +51,65 @@ static char	*ft_append(char *old, char *new)
 	return (ret);
 }
 
+void	handler0(int num)
+{
+	(void)num;
+	g_info.index += 1;
+	if (g_info.index == 9)
+	{
+		g_info.buf[g_info.i] = g_info.c;
+		if (g_info.c == '\0')
+			return (ft_printf("%s%s", g_info.p, g_info.buf), (void)0);
+		++g_info.i;
+		g_info.index = 0;
+		g_info.c = 0b0;
+		if (g_info.i == BUFF)
+		{
+			g_info.p = ft_append(g_info.p, g_info.buf);
+			g_info.i = 0;
+		}
+	}
+}
+
+void	handler1(int num)
+{
+	int	bit;
+
+	(void)num;
+	bit = 0b100000000;
+	if (g_info.index == 9)
+	{
+		g_info.buf[g_info.i] = g_info.c;
+		if (g_info.c == '\0')
+			return (ft_printf("%s%s", g_info.p, g_info.buf), (void)0);
+		++g_info.i;
+		g_info.index = 0;
+		g_info.c = 0b0;
+		if (g_info.i == BUFF)
+		{
+			g_info.p = ft_append(g_info.p, g_info.buf);
+			g_info.i = 0;
+		}
+		return ;
+	}
+	g_info.c |= (bit >> g_info.index);
+}
+
 int	main(int argc, char **argv)
 {
 	pid_t	the_pid;
 
 	(void)argv;
+	(void)argc;
 	if (argc != 1)
 		return (ft_printf(RED"\nwrong number of argument\n"END), 1);
 	the_pid = getpid();
 	initialize(&g_info);
-	printf(YELLOW"Server ready, PID: %d\n"END, the_pid);
-	signal(SIGUSR1, handler0);
-	signal(SIGUSR2, handler1);
+	printf(YELLOW"Server ready 👌, PID: %d\n"END, the_pid);
 	while (1)
 		pause();
+	signal(SIGUSR1, handler1);
+	signal(SIGUSR2, handler0);
 }
 
 /*
