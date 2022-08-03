@@ -6,19 +6,20 @@
 /*   By: tnoulens <tnoulens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 15:26:05 by tnoulens          #+#    #+#             */
-/*   Updated: 2022/08/02 19:06:25 by tnoulens         ###   ########.fr       */
+/*   Updated: 2022/08/03 12:31:43 by tnoulens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minitalk.h"
 
-int	delivery_confirmation(int num)
+static int	delivery_confirmation(int num)
 {
 	(void)num;
-	write(1, BLUE"\nmessage has been received indeed\n"END, 13);
+	write(1, BLUE"\nmessage has been received indeed!\n"END, 13);
+	exit(EXIT_SUCCESS);
 }
 
-int	bit_sender(pid_t the_pid, unsigned char uc)
+static int	bit_sender(pid_t the_pid, unsigned char uc)
 {
 	unsigned char	bit_comp;
 
@@ -35,4 +36,23 @@ int	bit_sender(pid_t the_pid, unsigned char uc)
 				return (0);
 		bit_comp >>= 1;
 	}
+}
+
+int	main(int argc, char **argv)
+{
+	pid_t	the_pid;
+
+	if (argc != 3)
+		return (ft_printf(RED"\nwrong number of argument\n"END), 1);
+	the_pid = ft_atoi(argv[1]);
+	if (the_pid == 0)
+		return (ft_printf(RED"\ntry server's PID please\n"END), 1);
+	while (argv[2])
+	{
+		bit_sender(the_pid, (unsigned char)*argv[2]);
+		++*argv;
+	}
+	sleep(5);
+	signal(SIGUSR1, delivery_confirmation);
+	return (0);
 }
