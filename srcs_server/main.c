@@ -6,24 +6,61 @@
 /*   By: tnoulens <tnoulens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 14:50:17 by tnoulens          #+#    #+#             */
-/*   Updated: 2022/08/03 18:03:49 by tnoulens         ###   ########.fr       */
+/*   Updated: 2022/08/03 19:10:31 by tnoulens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minitalk.h"
 
-t_string	g_info;
+t_data	g_info;
+
+static void	initialize(t_data *g_info)
+{
+	g_info->index = 0;
+	g_info->c = 0b0;
+	g_info->p = NULL;
+	g_info->buf[0] = 0;
+	g_info->i = 0;
+}
 
 static void	handler0(int num)
 {
 	(void)num;
-	
-	write(1, RED"\nI won't die\n"END, 24);
+	g_info.index += 1;
+	if (g_info.index == 9)
+	{
+		g_info.buf[g_info.i] = g_info.c;
+		++g_info.i;
+		g_info.index = 0;
+		g_info.c = 0b0;
+		if (g_info.i == BUFF)
+		{
+			g_info.p = ft_append(g_info.p, g_info.buf);
+			g_info.i = 0;
+		}
+	}
 }
 
 static void	handler1(int num)
 {
+	int	bit;
+
 	(void)num;
+	bit = 1 << CHAR_BIT;
+	if (g_info.index == 9)
+	{
+		g_info.buf[g_info.i] = g_info.c;
+		++g_info.i;
+		g_info.index = 0;
+		g_info.c = 0b0;
+		if (g_info.i == BUFF)
+		{
+			g_info.p = ft_append(g_info.p, g_info.buf);
+			g_info.i = 0;
+		}
+		return ;
+	}
+	g_info.c += bit >> g_info.index;
 }
 
 static char	*ft_append(char *old, char *new)
@@ -62,9 +99,10 @@ int	main(int argc, char **argv)
 	if (argc != 1)
 		return (ft_printf(RED"\nwrong number of argument\n"END), 1);
 	the_pid = getpid();
+	initialize(&g_info);
+	printf(YELLOW"Server ready, PID: %d\n"END, the_pid);
 	signal(SIGUSR1, handler0);
 	signal(SIGUSR2, handler1);
-	printf(YELLOW"Server ready, PID: %d\n"END, the_pid);
 	while (1)
 		pause();
 }
@@ -76,11 +114,14 @@ int	main(int argc, char **argv)
     unsigned char c = 0b0; on demarre c a 0
     
 	on recoit le signal 001100001
-	on incremente l'index quand on recoit un 0 mais on ne fait rien d'autre
+	
+	dans la fonction qui gere les 0, on incremente l'index quand on recoit
+	un 0 (SIGUSR1) mais on ne fait rien d'autre
     
-	on fait un bitshift de la taille de l'index quand on recoit un 1
+	dans la fonction qui gere les 1, on fait un bitshift de la taille de
+	l'index quand on recoit un 1 (SIGUSR2)
 
-	c est dans une variable struct globale
+	c et index sont dans une variable struct globale
 	
     c  += bit >> 2; 000000000 001000000|00 -> 001000000 DECIMAL: 64
     c  += bit >> 3; 001000000 000100000|000 -> 001100000 DECIMAL: 32
@@ -88,5 +129,15 @@ int	main(int argc, char **argv)
 
 	64 + 32  + 1 = 97 = 'a'
 	
-	dans ce cas, += est equivalent a |=
+	dans ce cas, "+=" est equivalent a "|=" :
+	
+	c  |= bit >> 2;
+	c  |= bit >> 3;
+	c  |= bit >> 8;
+
+	on stocke c dans un buffer qui est aussi dans la struct, si le buffer est
+	plein on fait ft_append	on reinitialise c et le buffer pour le prochain
+	char.
+	
+	a la fin on free si on a utilise ft_append
 */

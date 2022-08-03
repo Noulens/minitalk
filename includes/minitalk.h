@@ -6,7 +6,7 @@
 /*   By: tnoulens <tnoulens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 13:51:46 by tnoulens          #+#    #+#             */
-/*   Updated: 2022/08/03 16:38:35 by tnoulens         ###   ########.fr       */
+/*   Updated: 2022/08/03 19:02:53 by tnoulens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,15 @@
 # define BUFF 1024
 
 /* Structure */
-typedef struct s_string
+typedef struct s_data
 {
 	pid_t			the_pid;
-	unsigned char	uc;
+	unsigned char	c;
 	unsigned char	buf[BUFF];
-}	t_string;
+	unsigned char	*p;
+	int				index;
+	int				i;
+}	t_data;
 
 /* This is a minimal set of ANSI/VT100 color codes */
 # define END "\033[0m"
