@@ -6,7 +6,7 @@
 /*   By: tnoulens <tnoulens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 15:26:05 by tnoulens          #+#    #+#             */
-/*   Updated: 2022/08/03 12:31:43 by tnoulens         ###   ########.fr       */
+/*   Updated: 2022/08/03 15:41:46 by tnoulens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ int	main(int argc, char **argv)
 	{
 		bit_sender(the_pid, (unsigned char)*argv[2]);
 		++*argv;
+		usleep(1000);
 	}
 	sleep(5);
 	signal(SIGUSR1, delivery_confirmation);
