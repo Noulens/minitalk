@@ -6,7 +6,7 @@
 /*   By: tnoulens <tnoulens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 14:50:17 by tnoulens          #+#    #+#             */
-/*   Updated: 2022/08/03 20:15:25 by tnoulens         ###   ########.fr       */
+/*   Updated: 2022/08/03 20:30:25 by tnoulens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	initialize(t_data *g_info)
 
 static char	*ft_append(char *old, char *new)
 {
-	int				len;
+	int		len;
 	char	*ptr;
 	char	*ret;
 	char	*oldptr;
@@ -105,7 +105,7 @@ int	main(int argc, char **argv)
 		return (ft_printf(RED"\nwrong number of argument\n"END), 1);
 	the_pid = getpid();
 	initialize(&g_info);
-	printf(YELLOW"Server ready 👌, PID: %d\n"END, the_pid);
+	printf(YELLOW" 🤙 Server ready 📲, PID: %d\n"END, the_pid);
 	while (1)
 		pause();
 	signal(SIGUSR1, handler1);
