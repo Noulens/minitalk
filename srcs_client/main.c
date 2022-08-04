@@ -6,7 +6,7 @@
 /*   By: tnoulens <tnoulens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 15:26:05 by tnoulens          #+#    #+#             */
-/*   Updated: 2022/08/03 20:16:31 by tnoulens         ###   ########.fr       */
+/*   Updated: 2022/08/04 19:33:55 by tnoulens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ static void	bit_sender(pid_t the_pid, char c)
 			if (kill(the_pid, SIGUSR2) == -1)
 				return ;
 		bit_comp >>= 1;
+		usleep(1000);
 	}
 }
 
@@ -51,9 +52,9 @@ int	main(int argc, char **argv)
 	{
 		bit_sender(the_pid, *argv[2]);
 		++argv[2];
-		usleep(100);
 	}
-	sleep(5);
+	bit_sender(the_pid, '\0');
+	//sleep(5);
 	signal(SIGUSR1, delivery_confirmation);
 	return (0);
 }

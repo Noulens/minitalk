@@ -6,7 +6,7 @@
 /*   By: tnoulens <tnoulens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 13:51:46 by tnoulens          #+#    #+#             */
-/*   Updated: 2022/08/03 19:27:35 by tnoulens         ###   ########.fr       */
+/*   Updated: 2022/08/04 19:24:59 by tnoulens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,17 +22,13 @@
 # include "../libft/libft.h"
 
 /* Define */
-# define BUFF 1024
+# define BUFF 5100
 
 /* Structure */
 typedef struct s_data
 {
 	pid_t	the_pid;
-	char	c;
 	char	buf[BUFF];
-	char	*p;
-	int		index;
-	int		i;
 }	t_data;
 
 /* This is a minimal set of ANSI/VT100 color codes */
