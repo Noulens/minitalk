@@ -6,7 +6,7 @@
 /*   By: tnoulens <tnoulens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 15:26:05 by tnoulens          #+#    #+#             */
-/*   Updated: 2022/08/04 19:33:55 by tnoulens         ###   ########.fr       */
+/*   Updated: 2022/08/04 20:05:29 by tnoulens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ int	main(int argc, char **argv)
 		++argv[2];
 	}
 	bit_sender(the_pid, '\0');
-	//sleep(5);
 	signal(SIGUSR1, delivery_confirmation);
 	return (0);
 }

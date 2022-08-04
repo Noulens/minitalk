@@ -6,7 +6,7 @@
 /*   By: tnoulens <tnoulens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 14:50:17 by tnoulens          #+#    #+#             */
-/*   Updated: 2022/08/04 19:24:00 by tnoulens         ###   ########.fr       */
+/*   Updated: 2022/08/04 20:37:19 by tnoulens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,15 +31,15 @@ static void	initialize(t_data *g_info)
 	initializer(g_info->buf);
 }
 
-void	handler(int	num)
+void	handler(int num)
 {
 	static int				index;
-	static unsigned char 	c;
+	static unsigned char	c;
 	static int				i;
-	
+
 	if (num == SIGUSR1)
 		c |= 0b10000000 >> index++;
-	else if (num == SIGUSR2)
+	if (num == SIGUSR2)
 		index++;
 	if (index == 8)
 	{
@@ -56,6 +56,13 @@ void	handler(int	num)
 	}
 }
 
+/*	struct sigaction	sa;
+
+	sa.sa_flags = SA_SIGINFO;
+	sa.sa_sigaction = handler;
+	sigaction(SIGUSR1, &sa, NULL);
+	sigaction(SIGUSR2, &sa, NULL);
+*/
 int	main(int argc, char **argv)
 {
 	pid_t	the_pid;
