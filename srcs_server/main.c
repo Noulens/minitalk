@@ -6,7 +6,7 @@
 /*   By: tnoulens <tnoulens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 14:50:17 by tnoulens          #+#    #+#             */
-/*   Updated: 2022/08/05 14:38:01 by tnoulens         ###   ########.fr       */
+/*   Updated: 2022/08/05 14:40:43 by tnoulens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	main(int argc, char **argv)
 	sigaction(SIGUSR1, &sa, NULL);
 	sigaction(SIGUSR2, &sa, NULL);
 	if (argc != 1)
-		return (ft_printf(RED"\nwrong number of argument\n"END), 1);
+		return (ft_printf(RED"wrong number of argument\n"END), 1);
 	pid_server = getpid();
 	initialize(&g_info);
 	printf(YELLOW" 🤙 Server ready 📲, PID: %d\n"END, pid_server);
