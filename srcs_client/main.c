@@ -6,7 +6,7 @@
 /*   By: tnoulens <tnoulens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 15:26:05 by tnoulens          #+#    #+#             */
-/*   Updated: 2022/08/05 14:33:17 by tnoulens         ###   ########.fr       */
+/*   Updated: 2022/08/05 15:41:04 by tnoulens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ int	main(int argc, char **argv)
 	the_pid = ft_atoi(argv[1]);
 	if (the_pid == 0)
 		return (ft_printf(RED"try server's PID please\n"END), 1);
+	if (ft_strlen(argv[2]) > BUFF)
+		return (ft_printf(RED"> 10ko, don't send the LOTR trilogy\n"END), 1);
 	while (*argv[2])
 	{
 		bit_sender(the_pid, *argv[2]);
