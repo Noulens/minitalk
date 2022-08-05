@@ -6,7 +6,7 @@
 /*   By: tnoulens <tnoulens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 14:50:17 by tnoulens          #+#    #+#             */
-/*   Updated: 2022/08/05 14:13:28 by tnoulens         ###   ########.fr       */
+/*   Updated: 2022/08/05 14:38:01 by tnoulens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,19 @@
 
 t_data	g_info;
 
-static void	initializer(char *buf)
+static void	initialize(t_data *g_info)
 {
 	int	i;
 
 	i = 0;
 	while (i < BUFF - 1)
 	{
-		buf[i] = 0;
+		g_info->buf[i] = 0;
 		i++;
 	}
 }
 
-static void	initialize(t_data *g_info)
-{
-	initializer(g_info->buf);
-}
-
-void	handler(int sig, siginfo_t *info, void *context)
+static void	handler(int sig, siginfo_t *info, void *context)
 {
 	static int				index;
 	static unsigned char	c;
@@ -49,9 +44,9 @@ void	handler(int sig, siginfo_t *info, void *context)
 		if (c == '\0')
 		{
 			i = 0;
-			ft_printf("%s", g_info.buf);
+			ft_printf(END"%s\n"END, g_info.buf);
 			kill(info->si_pid, SIGUSR1);
-			initializer(g_info.buf);
+			initialize(&g_info);
 		}
 		index = 0;
 		c = 0b0;
@@ -76,7 +71,7 @@ int	main(int argc, char **argv)
 	pid_server = getpid();
 	initialize(&g_info);
 	printf(YELLOW" 🤙 Server ready 📲, PID: %d\n"END, pid_server);
-	while (1)
+	while (42)
 		pause();
 }
 
@@ -94,7 +89,7 @@ int	main(int argc, char **argv)
 	dans la fonction qui gere les 1, on fait un bitshift de la taille de
 	l'index quand on recoit un 1 (SIGUSR2)
 
-	c et index sont dans une variable struct globale
+	c est dans une variable struct globale
 	
     c  += bit >> 2; 000000000 001000000|00 -> 001000000 DECIMAL: 64
     c  += bit >> 3; 001000000 000100000|000 -> 001100000 DECIMAL: 32
