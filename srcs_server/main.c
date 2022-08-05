@@ -6,7 +6,7 @@
 /*   By: tnoulens <tnoulens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 14:50:17 by tnoulens          #+#    #+#             */
-/*   Updated: 2022/08/04 20:37:19 by tnoulens         ###   ########.fr       */
+/*   Updated: 2022/08/05 14:13:28 by tnoulens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,15 +31,16 @@ static void	initialize(t_data *g_info)
 	initializer(g_info->buf);
 }
 
-void	handler(int num)
+void	handler(int sig, siginfo_t *info, void *context)
 {
 	static int				index;
 	static unsigned char	c;
 	static int				i;
 
-	if (num == SIGUSR1)
+	(void)context;
+	if (sig == SIGUSR1)
 		c |= 0b10000000 >> index++;
-	if (num == SIGUSR2)
+	if (sig == SIGUSR2)
 		index++;
 	if (index == 8)
 	{
@@ -49,54 +50,36 @@ void	handler(int num)
 		{
 			i = 0;
 			ft_printf("%s", g_info.buf);
+			kill(info->si_pid, SIGUSR1);
 			initializer(g_info.buf);
 		}
 		index = 0;
 		c = 0b0;
 	}
+	kill(info->si_pid, SIGUSR2);
 }
 
-/*	struct sigaction	sa;
+int	main(int argc, char **argv)
+{
+	pid_t				pid_server;
+	struct sigaction	sa;
 
+	(void)argv;
+	(void)argc;
+	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = SA_SIGINFO;
 	sa.sa_sigaction = handler;
 	sigaction(SIGUSR1, &sa, NULL);
 	sigaction(SIGUSR2, &sa, NULL);
-*/
-int	main(int argc, char **argv)
-{
-	pid_t	the_pid;
-
-	(void)argv;
-	(void)argc;
 	if (argc != 1)
 		return (ft_printf(RED"\nwrong number of argument\n"END), 1);
-	the_pid = getpid();
+	pid_server = getpid();
 	initialize(&g_info);
-	printf(YELLOW" 🤙 Server ready 📲, PID: %d\n"END, the_pid);
-	signal(SIGUSR1, handler);
-	signal(SIGUSR2, handler);
+	printf(YELLOW" 🤙 Server ready 📲, PID: %d\n"END, pid_server);
 	while (1)
-	{
 		pause();
-	}
 }
-/*
-	if (g_info.index == 8)
-	{
-		g_info.buf[g_info.i] = g_info.c;
-		if (g_info.c == '\0')
-			ft_putstr_fd(g_info.buf, 0);
-		++g_info.i;
-		g_info.index = 0;
-		g_info.c = 0b0;
-		if (g_info.i == BUFF)
-		{
-			g_info.p = ft_append(g_info.p, g_info.buf);
-			g_info.i = 0;
-		}
-	}
-*/
+
 /*
 	on veut 'a' soit 97 ou 0b001100001
     
@@ -106,7 +89,7 @@ int	main(int argc, char **argv)
 	on recoit le signal 001100001
 	
 	dans la fonction qui gere les 0, on incremente l'index quand on recoit
-	un 0 (SIGUSR1) mais on ne fait rien d'autre
+	un 0 (SIGUSR1), on fait un bitshift et on incremente index pour le cas SIGUSR2
     
 	dans la fonction qui gere les 1, on fait un bitshift de la taille de
 	l'index quand on recoit un 1 (SIGUSR2)
@@ -125,5 +108,5 @@ int	main(int argc, char **argv)
 	c  |= bit >> 3;
 	c  |= bit >> 8;
 
-	on stocke c dans un buffer qui est aussi dans la struct
+	on stocke c dans le buffer qui est dans la struct globale
 */

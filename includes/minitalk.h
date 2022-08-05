@@ -6,7 +6,7 @@
 /*   By: tnoulens <tnoulens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 13:51:46 by tnoulens          #+#    #+#             */
-/*   Updated: 2022/08/04 20:36:29 by tnoulens         ###   ########.fr       */
+/*   Updated: 2022/08/05 13:46:44 by tnoulens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,15 @@
 # include <limits.h>
 # include "../libft/libft.h"
 
+# define SA_RESTART	0x10000000
+
 /* Define */
-# define BUFF 5100
+# define BUFF 10000
 
 /* Structure */
 typedef struct s_data
 {
-	pid_t	the_pid;
+	pid_t	pid_client;
 	char	buf[BUFF];
 }	t_data;
 
