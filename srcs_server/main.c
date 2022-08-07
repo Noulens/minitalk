@@ -74,34 +74,3 @@ int	main(int argc, char **argv)
 	while (42)
 		pause();
 }
-
-/*
-	on veut 'a' soit 97 ou 0b001100001
-    
-	int bit = 0b10000000; soit 128 en decimal, le max de char + 1
-    unsigned char c = 0b0; on demarre c a 0
-    
-	on recoit le signal 001100001
-	
-	dans la fonction qui gere les 0, on incremente l'index quand on recoit
-	un 0 (SIGUSR1), on fait un bitshift et on incremente index pour le cas SIGUSR2
-    
-	dans la fonction qui gere les 1, on fait un bitshift de la taille de
-	l'index quand on recoit un 1 (SIGUSR2)
-
-	c est dans une variable struct globale
-	
-    c  += bit >> 2; 000000000 001000000|00 -> 001000000 DECIMAL: 64
-    c  += bit >> 3; 001000000 000100000|000 -> 001100000 DECIMAL: 32
-    c  += bit >> 8; 001100000 000000001|00000000 -> 001100001 DECIMAL: 1
-
-	64 + 32  + 1 = 97 = 'a'
-	
-	dans ce cas, "+=" est equivalent a "|=" :
-	
-	c  |= bit >> 2;
-	c  |= bit >> 3;
-	c  |= bit >> 8;
-
-	on stocke c dans le buffer qui est dans la struct globale
-*/
