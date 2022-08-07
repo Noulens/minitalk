@@ -78,7 +78,7 @@ int	main(int argc, char **argv)
 /*
 	on veut 'a' soit 97 ou 0b001100001
     
-	int bit = 0b10000000; soit 128 en decimal, le max de unsigned char + 1
+	int bit = 0b10000000; soit 128 en decimal, le max de char + 1
     unsigned char c = 0b0; on demarre c a 0
     
 	on recoit le signal 001100001
